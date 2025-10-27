@@ -94,7 +94,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Привет, {user.first_name or 'друг'}! 🌿\n\n"
         "Я — искусственный интеллект, созданный, чтобы помогать людям, "
         "которые столкнулись с кибербуллингом, тревогой или стрессом.\n\n"
-        
+        "💬 Расскажи, что случилось, или выбери действие ниже:"
     )
     await update.message.reply_text(text, reply_markup=main_menu())
 
@@ -113,11 +113,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Он помогает людям делиться своими переживаниями и при необходимости "
             "направляет к специалистам.\n\n"
             "Автор: Белощицкий Евгений и Белощицкий Артем 💚"
+            
         )
-    else:
+    elif "с ботом" in text:
         reply = (
             "💬 Расскажи, пожалуйста, что случилось."
         )
+    else:
+        reply = await generate_local_reply(text)
 
     await update.message.reply_text(reply, reply_markup=main_menu(), parse_mode="Markdown")
 
