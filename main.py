@@ -1,18 +1,18 @@
 import os
 import random
 from dotenv import load_dotenv
-from telegram import Update
+from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-# Загружаем токен бота
+# Загружаем токен
 load_dotenv()
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
-# --- Ключевые слова для анализа сообщений ---
+# --- Ключевые слова ---
 ALERT_WORDS = ["суицид", "умереть", "не хочу жить", "плохо", "депрессия", "тревога", "страшно", "паника"]
 HUMAN_HELP_WORDS = ["психолог", "человек", "специалист", "консультант", "живой", "оператор", "реальный"]
 
-# --- Наборы примерных ответов ---
+# --- Готовые ответы ---
 SUPPORT_REPLIES = [
     "Мне очень жаль, что ты через это проходишь 💔. Помни: ты не один, и то, что ты чувствуешь — важно.",
     "Ты сделал(а) правильно, что написал(а). Иногда просто поговорить уже помогает немного отпустить боль 🌿.",
@@ -23,15 +23,22 @@ SUPPORT_REPLIES = [
 ]
 
 HELP_REPLIES = [
-    "Похоже, тебе сейчас нужна поддержка специалиста 🧠. Пожалуйста, обратись за помощью:\n📞 8-800-2000-122 — бесплатная линия доверия.",
-    "Я искусственный интеллект, но иногда лучше поговорить с настоящим человеком. Можно позвонить на 8-800-2000-122 или написать на https://чаты.доверие.рф 💬",
-    "Думаю, сейчас будет правильно обратиться к психологу. Вот надёжные контакты:\n💬 https://чаты.доверие.рф\n📞 8-800-2000-122 (круглосуточно)."
+    "Похоже, тебе сейчас нужна поддержка специалиста 🧠. Обратись за помощью:\n📞 8-800-2000-122 — бесплатная линия доверия.",
+    "Я искусственный интеллект, но иногда лучше поговорить с настоящим человеком.\n📞 8-800-2000-122\n💬 https://чаты.доверие.рф",
+    "Думаю, сейчас будет правильно обратиться к психологу. Надёжные контакты:\n💬 https://чаты.доверие.рф\n📞 8-800-2000-122 (круглосуточно)."
+]
+
+SELF_HELP = [
+    "Попробуй сделать глубокий вдох и медленно выдохнуть 🌿. Повтори это несколько раз.",
+    "Иногда помогает записать всё, что тревожит, на бумагу. Это немного освобождает разум ✍️.",
+    "Если можешь — выйди на улицу и подыши воздухом 🌤. Даже короткая прогулка помогает.",
+    "Послушай спокойную музыку или помедитируй — это помогает телу и уму восстановиться 🕊."
 ]
 
 SMALL_TALK = {
     "привет": [
-        "Привет! Я рад, что ты написал(а) 💚 Как ты себя чувствуешь?",
-        "Привет! 🌿 Что случилось, расскажи?",
+        "Привет! 💚 Как ты себя чувствуешь?",
+        "Привет 🌿 Что случилось?",
         "Здравствуйте! Я здесь, чтобы выслушать вас 💬."
     ],
     "спасибо": [
@@ -46,48 +53,38 @@ SMALL_TALK = {
     ]
 }
 
-# --- Если позже захочешь вернуть OpenAI, просто раскомментируй этот блок ---
-"""
-from openai import OpenAI
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-async def support_reply(message: str) -> str:
-    prompt = f'''
-Ты — эмпатичный ИИ-психолог. Отвечай мягко и с поддержкой.
-Сообщение пользователя: "{message}"
-'''
-    completion = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7,
-    )
-    return completion.choices[0].message.content.strip()
-"""
-
-# --- Основная логика без OpenAI ---
+# --- Функция генерации ответа ---
 async def generate_local_reply(message: str) -> str:
     msg = message.lower().strip()
 
-    # Приветствие / благодарность / прощание
     for key, options in SMALL_TALK.items():
         if key in msg:
             return random.choice(options)
 
-    # Тревожные сигналы
     if any(word in msg for word in ALERT_WORDS):
         return (
             "Похоже, тебе сейчас тяжело 💔\n"
             "Пожалуйста, не оставайся один(одна). Вот, куда можно обратиться:\n"
-            "📞 Линия доверия: 8-800-2000-122 (бесплатно, круглосуточно)\n"
-            "💬 Онлайн-чат поддержки: https://чаты.доверие.рф"
+            "📞 Линия доверия: 8-800-2000-122\n"
+            "💬 Онлайн-чат: https://чаты.доверие.рф"
         )
 
-    # Просьба о реальной помощи
     if any(word in msg for word in HUMAN_HELP_WORDS):
         return random.choice(HELP_REPLIES)
 
-    # Общая поддержка
     return random.choice(SUPPORT_REPLIES)
+
+
+# --- Кнопки ---
+def main_menu():
+    return ReplyKeyboardMarkup(
+        [
+            ["💬 Поговорить с ботом", "🧠 Обратиться к профессионалу"],
+            ["📘 Советы по самопомощи", "🕊 О проекте"]
+        ],
+        resize_keyboard=True
+    )
 
 
 # --- Команды ---
@@ -95,17 +92,34 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     text = (
         f"Привет, {user.first_name or 'друг'}! 🌿\n\n"
-        "Я — искусственный интеллект, созданный, чтобы поддерживать людей, "
-        "которые столкнулись с кибербуллингом или тревогой.\n\n"
-        "💬 Расскажи, пожалуйста, что случилось."
+        "Я — искусственный интеллект, созданный, чтобы помогать людям, "
+        "которые столкнулись с кибербуллингом, тревогой или стрессом.\n\n"
+        
     )
-    await update.message.reply_text(text)
+    await update.message.reply_text(text, reply_markup=main_menu())
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_message = update.message.text
-    reply = await generate_local_reply(user_message)
-    await update.message.reply_text(reply)
+    text = update.message.text.lower()
+
+    if "профессионал" in text:
+        reply = random.choice(HELP_REPLIES)
+    elif "советы" in text:
+        reply = random.choice(SELF_HELP)
+    elif "о проекте" in text:
+        reply = (
+            "🌿 *О проекте*\n\n"
+            "Этот бот создан как часть платформы психологической поддержки жертв кибербуллинга.\n"
+            "Он помогает людям делиться своими переживаниями и при необходимости "
+            "направляет к специалистам.\n\n"
+            "Автор: Белощицкий Евгений и Белощицкий Артем 💚"
+        )
+    else:
+        reply = (
+            "💬 Расскажи, пожалуйста, что случилось."
+        )
+
+    await update.message.reply_text(reply, reply_markup=main_menu(), parse_mode="Markdown")
 
 
 # --- Запуск бота ---
