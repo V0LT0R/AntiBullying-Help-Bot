@@ -3,6 +3,8 @@ import asyncio
 import logging
 import uuid
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
 import aiosqlite
 from gpt4all import GPT4All
@@ -21,9 +23,17 @@ from telegram.ext import (
 )
 
 # -----------------------
-# CONFIG
+# LOAD ENV VARIABLES
 # -----------------------
-TELEGRAM_TOKEN = "ВАШ_TELEGRAM_BOT_TOKEN_HERE"
+load_dotenv()  # загружаем .env
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN") 
+
+if not TELEGRAM_TOKEN:
+    raise ValueError("❌ TELEGRAM_TOKEN не найден. Добавьте его в .env файл.")
+
+# -----------------------
+# DB CONFIG
+# -----------------------
 MODEL_NAME = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"  # или путь к файлу .gguf
 DB_PATH = "anti_bullying_logs.db"
 
