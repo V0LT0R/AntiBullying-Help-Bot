@@ -34,13 +34,18 @@ Python **3.11+**
 project_root/
 │
 ├─ antibullying_bot.py # Main Telegram bot
+
 ├─ report.py # Analytics and reporting tool
+
 ├─ README.md # Documentation (this file)
+
 ├─ .gitignore # Git ignore rules
+
 ├─ .env # Secret configuration (not included)
+
 └─ stats/ # Automatically generated anonymous logs
-├─ events_YYYY-MM-DD.csv
-└─ counters.json
+    ├─ events_YYYY-MM-DD.csv
+    └─ counters.json
 
 ---
 
