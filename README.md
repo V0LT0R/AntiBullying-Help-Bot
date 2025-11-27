@@ -4,8 +4,6 @@
 This repository contains an AI-powered Telegram bot designed to support students experiencing bullying, cyberbullying, and emotional stress.  
 The bot provides empathetic support using **Google Gemini AI**, detects crisis phrases, offers emergency hotline numbers, and logs anonymized statistics for educational institutions.
 
-This README serves as the **official user manual** and fully satisfies the documentation requirements listed in section **3. DDP_Фамилии членов группы**.
-
 ---
 
 # 3. Documents for Developed Project — DDP_Biloshchytskyi
