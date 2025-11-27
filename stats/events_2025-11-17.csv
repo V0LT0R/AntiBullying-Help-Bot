@@ -1,0 +1,28 @@
+ts_utc,type,label,text
+2025-11-17T11:10:23,system,start,
+2025-11-17T11:10:32,button,p_self,
+2025-11-17T11:10:34,button,p_self,
+2025-11-17T11:10:45,button,p_witness,
+2025-11-17T11:10:58,button,p_hotline,
+2025-11-17T11:11:01,button,chat_ai,
+2025-11-17T11:11:09,crisis,detected,я хочу умереть
+2025-11-17T11:11:16,button,chat_ai,
+2025-11-17T11:11:24,message_ai,free_chat,привет
+2025-11-17T11:26:02,system,start,
+2025-11-17T11:26:05,button,p_self,
+2025-11-17T11:26:12,button,p_witness,
+2025-11-17T11:26:18,button,p_rights,
+2025-11-17T11:26:25,button,chat_ai,
+2025-11-17T11:26:30,message_ai,free_chat,привет
+2025-11-17T11:26:53,message_ai,free_chat,все хорошо но меня обзывают в груповом чате
+2025-11-17T11:27:12,message_ai,free_chat,что мне делать
+2025-11-17T11:31:29,system,start,
+2025-11-17T11:31:33,button,chat_ai,
+2025-11-17T11:31:38,message_ai,free_chat,привет
+2025-11-17T11:36:39,system,start,
+2025-11-17T11:36:41,button,chat_ai,
+2025-11-17T11:36:48,message_ai,free_chat,как дела
+2025-11-17T12:16:23,system,start,
+2025-11-17T12:16:28,button,p_self,
+2025-11-17T12:16:45,button,chat_ai,
+2025-11-17T12:16:51,message_ai,free_chat,привет

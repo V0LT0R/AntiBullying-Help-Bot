@@ -1,0 +1,12 @@
+{
+  "buttons": {
+    "p_self": 4,
+    "p_witness": 2,
+    "p_rights": 1,
+    "p_hotline": 1,
+    "chat_ai": 6
+  },
+  "crisis_detected": 1,
+  "messages_total": 7,
+  "ai_messages": 7
+}

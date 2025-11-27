@@ -1,0 +1,49 @@
+# --- Python bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- OS-specific files ---
+.DS_Store
+Thumbs.db
+
+# --- Editor / IDE configs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Environment / secrets ---
+.env
+.env.local
+.env.*
+
+# --- Logs & runtime data ---
+*.log
+
+# --- Project-specific: stats and reports ---
+# Daily anonymous events (optional: ignore raw logs)
+stats/events_*.csv
+stats/counters.json
+
+# If you want to ignore entire stats folder, uncomment:
+stats/
+
+# --- PyInstaller / build artifacts ---
+build/
+dist/
+*.spec
+
+# --- Jupyter / notebooks (if any) ---
+.ipynb_checkpoints/
+
+# --- Cache / tooling ---
+.mypy_cache/
+.pytest_cache/
+.cache/
