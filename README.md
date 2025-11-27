@@ -44,8 +44,10 @@ project_root/
 ├─ .env # Secret configuration (not included)
 
 └─ stats/ # Automatically generated anonymous logs
-    ├─ events_YYYY-MM-DD.csv
-    └─ counters.json
+
+├─ events_YYYY-MM-DD.csv
+
+└─ counters.json
 
 ---
 
